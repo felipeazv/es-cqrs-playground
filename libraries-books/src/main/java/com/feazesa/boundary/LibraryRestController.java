@@ -2,6 +2,7 @@ package com.feazesa.boundary;
 
 import com.feazesa.command.RegisterBookCommand;
 import com.feazesa.command.RegisterLibraryCommand;
+import com.feazesa.command.UpdateBookCommand;
 import com.feazesa.command.UpdateLibraryCommand;
 import com.feazesa.projection.model.BookEntity;
 import com.feazesa.projection.model.BookEntity.BookDTO;
@@ -65,6 +66,20 @@ public class LibraryRestController {
                 .build();
         commandGateway.send(command);
         return "Added";
+    }
+
+    @PutMapping("/{libraryId}/books/{bookId}")
+    public String addBook(@PathVariable Integer libraryId, @PathVariable Integer bookId, @RequestBody BookEntity book) {
+        final var command = UpdateBookCommand.builder()
+                .aggregateId(UUID.randomUUID())
+                .libraryId(libraryId)
+                .bookId(bookId)
+                .author(book.getAuthor())
+                .isbn(book.getIsbn())
+                .title(book.getTitle())
+                .build();
+        commandGateway.send(command);
+        return "Updated";
     }
 
     @GetMapping("/{libraryId}/books")

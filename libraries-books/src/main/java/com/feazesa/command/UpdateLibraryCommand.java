@@ -11,6 +11,6 @@ public class UpdateLibraryCommand {
     @TargetAggregateIdentifier
     private final UUID aggregateId;
 
-    private final Integer id;
+    private final Integer libraryId;
     private final String name;
 }

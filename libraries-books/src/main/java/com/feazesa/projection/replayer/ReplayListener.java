@@ -10,13 +10,12 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Component
 @Log4j2
-public class ReplayerListener implements ApplicationListener<ApplicationReadyEvent> {
+public class ReplayListener implements ApplicationListener<ApplicationReadyEvent> {
 
-    private final Replayer replayer;
+    private final Replay replay;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
-        replayer.replay();
+//        replay.replay();
     }
-
 }

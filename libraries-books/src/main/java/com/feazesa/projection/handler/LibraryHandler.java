@@ -26,6 +26,7 @@ public class LibraryHandler {
         final var library = new LibraryEntity();
         library.setName(event.getName());
         libraryRepository.save(library);
+        log.info("Library saved {}.", event);
     }
 
     @EventHandler
@@ -35,6 +36,7 @@ public class LibraryHandler {
             final var library = findLibrary.get();
             library.setName(event.getName());
             libraryRepository.save(library);
+            log.info("Library updated {}.", event);
         }
     }
 
@@ -50,7 +52,7 @@ public class LibraryHandler {
 
     @ResetHandler
     public void reset() {
-        log.warn("Deleting library data projection");
         libraryRepository.deleteAll();
+        log.info("Libraries deleted.");
     }
 }

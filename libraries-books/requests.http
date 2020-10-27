@@ -1,0 +1,33 @@
+### Create a Library ###
+
+POST localhost:8080/api/libraries
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Eindhoven Library"
+}
+
+### Get all libearies ###
+
+GET localhost:8080/api/libraries
+Accept: application/json
+Content-Type: application/json
+
+### Create a Book ###
+
+POST localhost:8080/api/libraries/97/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "author": "Author 1",
+  "isbn": "123123123",
+  "title": "Book 1"
+}
+
+### Get all books ###
+
+GET localhost:8080/api/libraries/97/books
+Accept: application/json
+Content-Type: application/json

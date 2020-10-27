@@ -6,15 +6,19 @@ import lombok.extern.log4j.Log4j2;
 import org.axonframework.config.EventProcessingConfiguration;
 import org.axonframework.eventhandling.TrackingEventProcessor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 
 @AllArgsConstructor
 @Component
 @Log4j2
-public class Replayer {
+@RestController
+public class Replay {
     private final EventProcessingConfiguration configuration;
 
+    @PostMapping("/admin/replay")
     public void replay() {
         final var name = "com.feazesa.projection.handler";
         configuration.eventProcessor(name, TrackingEventProcessor.class).ifPresent(processor -> {

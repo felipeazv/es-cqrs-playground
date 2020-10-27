@@ -34,6 +34,7 @@ public class BookHandler {
                 .title(event.getTitle())
                 .build();
         bookRepository.save(book);
+        log.info("Book saved {}.", event);
     }
 
     @EventHandler
@@ -45,6 +46,7 @@ public class BookHandler {
             book.setIsbn(event.getIsbn());
             book.setTitle(event.getTitle());
             bookRepository.save(book);
+            log.info("Book updated {}.", event);
         }
     }
 
@@ -56,7 +58,7 @@ public class BookHandler {
 
     @ResetHandler
     public void reset() {
-        log.warn("Deleting book data projection");
         bookRepository.deleteAll();
+        log.info("Books deleted.");
     }
 }

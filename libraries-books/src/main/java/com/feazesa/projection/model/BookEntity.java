@@ -24,11 +24,12 @@ public class BookEntity {
     private String author;
 
     public BookDTO getBookDTO() {
-        return new BookDTO(this.isbn, this.title, this.author);
+        return new BookDTO(this.bookId, this.isbn, this.title, this.author);
     }
 
     @Data
     public static class BookDTO {
+        private final Integer bookId;
         private final String isbn;
         private final String title;
         private final String author;

@@ -2,8 +2,10 @@ package com.feazesa.aggregate;
 
 import com.feazesa.command.RegisterBookCommand;
 import com.feazesa.command.RegisterLibraryCommand;
+import com.feazesa.command.UpdateBookCommand;
 import com.feazesa.command.UpdateLibraryCommand;
 import com.feazesa.event.BookCreatedEvent;
+import com.feazesa.event.BookUpdatedEvent;
 import com.feazesa.event.LibraryCreatedEvent;
 import com.feazesa.event.LibraryUpdatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
@@ -40,7 +42,7 @@ public class Library {
     public Library(UpdateLibraryCommand cmd) {
         Assert.notNull(cmd.getName(), () -> "Name should not be null");
 
-        AggregateLifecycle.apply(new LibraryUpdatedEvent(cmd.getAggregateId(), cmd.getId(), cmd.getName()));
+        AggregateLifecycle.apply(new LibraryUpdatedEvent(cmd.getAggregateId(), cmd.getLibraryId(), cmd.getName()));
     }
 
     @EventSourcingHandler
@@ -53,17 +55,39 @@ public class Library {
         Assert.notNull(cmd.getLibraryId(), () -> "ID should not be null");
         Assert.notNull(cmd.getIsbn(), () -> "Book ISBN should not be null");
 
-        AggregateLifecycle.apply(new BookCreatedEvent(
-                cmd.getAggregateId(),
-                cmd.getLibraryId(),
-                cmd.getIsbn(),
-                cmd.getTitle(),
-                cmd.getAuthor())
+        AggregateLifecycle.apply(BookCreatedEvent.builder()
+                .aggregateId(cmd.getAggregateId())
+                .author(cmd.getAuthor())
+                .isbn(cmd.getIsbn())
+                .libraryId(cmd.getLibraryId())
+                .title(cmd.getTitle())
+                .build()
         );
     }
 
     @EventSourcingHandler
     private void bookCreated(BookCreatedEvent event) {
+        aggregateId = event.getAggregateId();
+    }
+
+    @CommandHandler
+    public Library(UpdateBookCommand cmd) {
+        Assert.notNull(cmd.getLibraryId(), () -> "ID should not be null");
+        Assert.notNull(cmd.getIsbn(), () -> "Book ISBN should not be null");
+
+        AggregateLifecycle.apply(BookUpdatedEvent.builder()
+                .aggregateId(cmd.getAggregateId())
+                .author(cmd.getAuthor())
+                .bookId(cmd.getBookId())
+                .isbn(cmd.getIsbn())
+                .libraryId(cmd.getLibraryId())
+                .title(cmd.getTitle())
+                .build()
+        );
+    }
+
+    @EventSourcingHandler
+    private void bookUpdated(BookUpdatedEvent event) {
         aggregateId = event.getAggregateId();
     }
 
