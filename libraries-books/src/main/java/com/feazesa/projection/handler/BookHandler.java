@@ -6,6 +6,7 @@ import com.feazesa.projection.model.BookEntity;
 import com.feazesa.projection.model.BookEntity.BookDTO;
 import com.feazesa.projection.query.GetBooksQuery;
 import com.feazesa.projection.repository.BookRepository;
+import lombok.extern.log4j.Log4j2;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.queryhandling.QueryHandler;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class BookHandler {
 
@@ -54,6 +56,7 @@ public class BookHandler {
 
     @ResetHandler
     public void reset() {
+        log.warn("Deleting book data projection");
         bookRepository.deleteAll();
     }
 }

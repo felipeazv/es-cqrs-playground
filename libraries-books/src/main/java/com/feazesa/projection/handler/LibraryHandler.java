@@ -5,11 +5,13 @@ import com.feazesa.event.LibraryUpdatedEvent;
 import com.feazesa.projection.model.LibraryEntity;
 import com.feazesa.projection.query.GetLibraryQuery;
 import com.feazesa.projection.repository.LibraryRepository;
+import lombok.extern.log4j.Log4j2;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 public class LibraryHandler {
 
@@ -48,6 +50,7 @@ public class LibraryHandler {
 
     @ResetHandler
     public void reset() {
+        log.warn("Deleting library data projection");
         libraryRepository.deleteAll();
     }
 }

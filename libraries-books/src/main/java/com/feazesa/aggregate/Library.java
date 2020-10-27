@@ -13,8 +13,6 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Aggregate
