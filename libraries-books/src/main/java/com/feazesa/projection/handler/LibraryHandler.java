@@ -1,4 +1,4 @@
-package com.feazesa.projection;
+package com.feazesa.projection.handler;
 
 import com.feazesa.event.LibraryCreatedEvent;
 import com.feazesa.event.LibraryUpdatedEvent;
@@ -10,14 +10,12 @@ import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class LibraryProjection {
+public class LibraryHandler {
 
     private final LibraryRepository libraryRepository;
 
-    public LibraryProjection(LibraryRepository libraryRepository) {
+    public LibraryHandler(LibraryRepository libraryRepository) {
         this.libraryRepository = libraryRepository;
     }
 

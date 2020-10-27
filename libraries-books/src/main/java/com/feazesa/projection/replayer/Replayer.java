@@ -16,7 +16,7 @@ public class Replayer {
     private final EventProcessingConfiguration configuration;
 
     public void replay() {
-        final var name = "com.feazesa.projection";
+        final var name = "com.feazesa.projection.handler";
         configuration.eventProcessor(name, TrackingEventProcessor.class).ifPresent(processor -> {
             processor.shutDown();
             processor.resetTokens();

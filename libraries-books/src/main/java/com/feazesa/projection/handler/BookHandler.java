@@ -1,4 +1,4 @@
-package com.feazesa.projection;
+package com.feazesa.projection.handler;
 
 import com.feazesa.event.BookCreatedEvent;
 import com.feazesa.event.BookUpdatedEvent;
@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BookProjection {
+public class BookHandler {
 
     private final BookRepository bookRepository;
 
-    public BookProjection(BookRepository bookRepository) {
+    public BookHandler(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
