@@ -1,0 +1,9 @@
+# Intellij/Java project files and folders
+**/target/
+**/.idea/
+**/logs/
+*.iml
+*.plantuml
+*.lock
+*.tgz
+**/widget-api/target/
