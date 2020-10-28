@@ -1,4 +1,4 @@
-package com.feazesa.projection.replayer;
+package com.feazesa.projection.replay;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -20,12 +20,14 @@ public class Replay {
 
     @PostMapping("/admin/replay")
     public void replay() {
+        log.warn("Replay started.");
         final var name = "com.feazesa.projection.handler";
         configuration.eventProcessor(name, TrackingEventProcessor.class).ifPresent(processor -> {
             processor.shutDown();
             processor.resetTokens();
             processor.start();
         });
+        log.warn("Replay finished.");
     }
 
     @Value

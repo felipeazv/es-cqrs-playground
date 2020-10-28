@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Getter
@@ -16,8 +16,9 @@ import javax.persistence.Id;
 public class LibraryEntity {
 
     @Id
-    @GeneratedValue
-    private Integer libraryId;
+    private UUID libraryId;
+
     @Setter
     private String name;
+
 }

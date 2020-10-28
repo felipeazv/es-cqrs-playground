@@ -37,6 +37,7 @@ public class LibraryRestController {
     public String addLibrary(@RequestBody LibraryEntity libraryEntity) {
         final var command = RegisterLibraryCommand.builder()
                 .aggregateId(UUID.randomUUID())
+                .libraryId(UUID.randomUUID())
                 .name(libraryEntity.getName())
                 .build();
         commandGateway.send(command);
@@ -44,22 +45,23 @@ public class LibraryRestController {
     }
 
     @PutMapping("/{libraryId}")
-    public String updateLibrary(@PathVariable Integer libraryId, @RequestBody LibraryEntity libraryEntity) {
+    public String updateLibrary(@PathVariable UUID libraryId, @RequestBody LibraryEntity libraryEntity) {
         final var command = new UpdateLibraryCommand(UUID.randomUUID(), libraryId, libraryEntity.getName());
         commandGateway.send(command);
         return "Updated";
     }
 
     @GetMapping("/{libraryId}")
-    public LibraryEntity getLibrary(@PathVariable Integer libraryId) throws InterruptedException, ExecutionException {
+    public LibraryEntity getLibrary(@PathVariable UUID libraryId) throws InterruptedException, ExecutionException {
         return queryGateway.query(new GetLibraryQuery(libraryId), LibraryEntity.class).get();
     }
 
     @PostMapping("/{libraryId}/books")
-    public String addBook(@PathVariable Integer libraryId, @RequestBody BookEntity book) {
+    public String addBook(@PathVariable UUID libraryId, @RequestBody BookEntity book) {
         final var command = RegisterBookCommand.builder()
                 .aggregateId(UUID.randomUUID())
                 .libraryId(libraryId)
+                .bookId(UUID.randomUUID())
                 .author(book.getAuthor())
                 .isbn(book.getIsbn())
                 .title(book.getTitle())
@@ -69,7 +71,7 @@ public class LibraryRestController {
     }
 
     @PutMapping("/{libraryId}/books/{bookId}")
-    public String addBook(@PathVariable Integer libraryId, @PathVariable Integer bookId, @RequestBody BookEntity book) {
+    public String addBook(@PathVariable UUID libraryId, @PathVariable UUID bookId, @RequestBody BookEntity book) {
         final var command = UpdateBookCommand.builder()
                 .aggregateId(UUID.randomUUID())
                 .libraryId(libraryId)
@@ -83,7 +85,7 @@ public class LibraryRestController {
     }
 
     @GetMapping("/{libraryId}/books")
-    public List<BookDTO> getBook(@PathVariable Integer libraryId) throws InterruptedException, ExecutionException {
+    public List<BookDTO> getBook(@PathVariable UUID libraryId) throws InterruptedException, ExecutionException {
         return queryGateway.query(new GetBooksQuery(libraryId), ResponseTypes.multipleInstancesOf(BookDTO.class)).get();
     }
 

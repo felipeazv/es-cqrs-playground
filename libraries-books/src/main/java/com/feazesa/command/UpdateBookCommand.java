@@ -13,8 +13,8 @@ public class UpdateBookCommand {
     @TargetAggregateIdentifier
     private final UUID aggregateId;
 
-    private final Integer bookId;
-    private final Integer libraryId;
+    private final UUID bookId;
+    private final UUID libraryId;
     private final String isbn;
     private final String title;
     private final String author;

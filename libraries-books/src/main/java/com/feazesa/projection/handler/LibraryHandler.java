@@ -4,7 +4,7 @@ import com.feazesa.event.LibraryCreatedEvent;
 import com.feazesa.event.LibraryUpdatedEvent;
 import com.feazesa.projection.model.LibraryEntity;
 import com.feazesa.projection.query.GetLibraryQuery;
-import com.feazesa.projection.repository.LibraryRepository;
+import com.feazesa.projection.repository.LibraryProjectionRepository;
 import lombok.extern.log4j.Log4j2;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
@@ -15,16 +15,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class LibraryHandler {
 
-    private final LibraryRepository libraryRepository;
+    private final LibraryProjectionRepository libraryRepository;
 
-    public LibraryHandler(LibraryRepository libraryRepository) {
+    public LibraryHandler(LibraryProjectionRepository libraryRepository) {
         this.libraryRepository = libraryRepository;
     }
 
     @EventHandler
     public void addLibrary(LibraryCreatedEvent event) {
-        final var library = new LibraryEntity();
-        library.setName(event.getName());
+        final var library = new LibraryEntity(event.getLibraryId(), event.getName());
         libraryRepository.save(library);
         log.info("Library saved {}.", event);
     }

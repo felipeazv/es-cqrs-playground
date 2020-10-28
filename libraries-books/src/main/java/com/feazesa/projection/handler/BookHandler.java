@@ -5,7 +5,7 @@ import com.feazesa.event.BookUpdatedEvent;
 import com.feazesa.projection.model.BookEntity;
 import com.feazesa.projection.model.BookEntity.BookDTO;
 import com.feazesa.projection.query.GetBooksQuery;
-import com.feazesa.projection.repository.BookRepository;
+import com.feazesa.projection.repository.BookProjectionRepository;
 import lombok.extern.log4j.Log4j2;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @Service
 public class BookHandler {
 
-    private final BookRepository bookRepository;
+    private final BookProjectionRepository bookRepository;
 
-    public BookHandler(BookRepository bookRepository) {
+    public BookHandler(BookProjectionRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
@@ -29,6 +29,7 @@ public class BookHandler {
     public void addBook(BookCreatedEvent event) {
         final var book = BookEntity.builder()
                 .libraryId(event.getLibraryId())
+                .bookId(event.getBookId())
                 .author(event.getAuthor())
                 .isbn(event.getIsbn())
                 .title(event.getTitle())

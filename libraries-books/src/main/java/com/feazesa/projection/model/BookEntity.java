@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Builder
@@ -15,10 +15,8 @@ import javax.persistence.Id;
 public class BookEntity {
 
     @Id
-    @GeneratedValue
-    private Integer bookId;
-
-    private Integer libraryId;
+    private UUID bookId;
+    private UUID libraryId;
     private String isbn;
     private String title;
     private String author;
@@ -29,7 +27,7 @@ public class BookEntity {
 
     @Data
     public static class BookDTO {
-        private final Integer bookId;
+        private final UUID bookId;
         private final String isbn;
         private final String title;
         private final String author;

@@ -1,3 +1,9 @@
+### Trigger Replay ###
+
+POST localhost:8080/admin/replay
+Accept: application/json
+Content-Type: application/json
+
 ### Create a Library ###
 
 POST localhost:8080/api/libraries
@@ -5,10 +11,10 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "Eindhoven Library"
+  "name": "Amsterdam Library"
 }
 
-### Get all libearies ###
+### Get all libraries ###
 
 GET localhost:8080/api/libraries
 Accept: application/json
@@ -16,18 +22,30 @@ Content-Type: application/json
 
 ### Create a Book ###
 
-POST localhost:8080/api/libraries/97/books
+POST localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0/books
+Accept: application/json
+Content-Type: application/json
+
+{
+  "author": "Author 2",
+  "isbn": "BBB123123123",
+  "title": "Book 2"
+}
+
+### Update a Book ###
+
+PUT localhost:8080/api/libraries/815d5517-1aea-40e0-8bb4-734d89ee7b78/books/da003339-b0cf-4735-b4c1-17203498e0ec
 Accept: application/json
 Content-Type: application/json
 
 {
   "author": "Author 1",
-  "isbn": "123123123",
-  "title": "Book 1"
+  "isbn": "AAA123123123",
+  "title": "Book 2"
 }
 
-### Get all books ###
+### Get all books from a given library ###
 
-GET localhost:8080/api/libraries/97/books
+GET localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0/books
 Accept: application/json
 Content-Type: application/json

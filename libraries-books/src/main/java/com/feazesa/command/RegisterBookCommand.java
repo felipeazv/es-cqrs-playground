@@ -12,7 +12,8 @@ public class RegisterBookCommand {
     @TargetAggregateIdentifier
     private final UUID aggregateId;
 
-    private final Integer libraryId;
+    private final UUID libraryId;
+    private final UUID bookId;
     private final String isbn;
     private final String title;
     private final String author;

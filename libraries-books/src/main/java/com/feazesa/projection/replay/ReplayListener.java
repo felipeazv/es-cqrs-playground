@@ -1,4 +1,4 @@
-package com.feazesa.projection.replayer;
+package com.feazesa.projection.replay;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

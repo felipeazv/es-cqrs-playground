@@ -12,6 +12,6 @@ public class RegisterLibraryCommand {
 
     @TargetAggregateIdentifier
     private final UUID aggregateId;
-
+    private final UUID libraryId;
     private final String name;
 }
