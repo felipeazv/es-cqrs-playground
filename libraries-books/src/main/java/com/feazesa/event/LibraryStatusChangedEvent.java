@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @Builder
 @Data
-public class LibraryCreatedEvent {
+public class LibraryStatusChangedEvent {
+
     @TargetAggregateIdentifier
     private final UUID aggregateId;
     private final UUID libraryId;
-    private final String name;
     private final LibraryStatus status;
 }

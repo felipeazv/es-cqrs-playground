@@ -1,6 +1,8 @@
 package com.feazesa.boundary;
 
 import com.feazesa.command.*;
+import com.feazesa.enums.Enums;
+import com.feazesa.enums.Enums.LibraryStatus;
 import com.feazesa.projection.model.BookEntity;
 import com.feazesa.projection.model.BookEntity.BookDTO;
 import com.feazesa.projection.model.LibraryEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/api/libraries", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,9 +46,24 @@ public class LibraryRestController {
 
     @PutMapping("/{libraryId}")
     public String updateLibrary(@PathVariable UUID libraryId, @RequestBody LibraryEntity libraryEntity) {
-        final var command = new UpdateLibraryCommand(UUID.randomUUID(), libraryId, libraryEntity.getName());
+        final var command = UpdateLibraryCommand.builder()
+        .aggregateId(UUID.randomUUID())
+                .libraryId(libraryId)
+                .name(libraryEntity.getName())
+                .build();
         commandGateway.send(command);
         return "Updated";
+    }
+
+    @PutMapping("/{libraryId}/status/unavailable")
+    public String changeLibraryStatusIsUnavailable(@PathVariable UUID libraryId) {
+        final var command = ChangeLibraryStatusCommand.builder()
+                .aggregateId(UUID.randomUUID())
+                .libraryId(libraryId)
+                .status(LibraryStatus.Unavailable)
+                .build();
+        commandGateway.send(command);
+        return "Library is unavailable";
     }
 
     @GetMapping("/{libraryId}")
@@ -91,7 +109,7 @@ public class LibraryRestController {
         return queryGateway.query(GetLibraryQuery.builder().build(), ResponseTypes.multipleInstancesOf(LibraryEntity.class)).get();
     }
 
-    @DeleteMapping("/{libraryId}/books/{bookId}")
+    @DeleteMapping("/books/{bookId}")
     public String deleteBook(@PathVariable UUID bookId) {
         final var command = DeleteBookCommand.builder()
                 .aggregateId(UUID.randomUUID())

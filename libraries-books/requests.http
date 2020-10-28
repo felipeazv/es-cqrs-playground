@@ -44,6 +44,15 @@ Content-Type: application/json
   "title": "Book 2-new"
 }
 
+### Change Library Status ###
+
+PUT localhost:8080/api/libraries/815d5517-1aea-40e0-8bb4-734d89ee7b78/status/unavailable
+Accept: application/json
+Content-Type: application/json
+
+{
+  "status": "Unavailable"
+}
 ### Get all books from a given library ###
 
 GET localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0/books

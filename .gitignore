@@ -6,7 +6,6 @@
 *.plantuml
 *.lock
 *.tgz
-**/widget-api/target/
 /.
 /projection.trace.db
 /projection.mv.db

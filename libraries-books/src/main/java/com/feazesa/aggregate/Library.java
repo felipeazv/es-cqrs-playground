@@ -12,6 +12,8 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 import java.util.UUID;
 
+import static com.feazesa.enums.Enums.LibraryStatus.Available;
+
 @Aggregate
 @Log4j2
 public class Library {
@@ -27,7 +29,14 @@ public class Library {
     public Library(RegisterLibraryCommand cmd) {
         Assert.notNull(cmd.getName(), () -> "Name should not be null");
         log.info("Command received for {}.", cmd);
-        AggregateLifecycle.apply(new LibraryCreatedEvent(cmd.getAggregateId(), cmd.getLibraryId(), cmd.getName()));
+        AggregateLifecycle.apply(
+                LibraryCreatedEvent.builder()
+                        .aggregateId(cmd.getAggregateId())
+                        .libraryId(cmd.getLibraryId())
+                        .name(cmd.getName())
+                        .status(Available)
+                        .build()
+        );
     }
 
     @EventSourcingHandler
@@ -39,7 +48,13 @@ public class Library {
     public Library(UpdateLibraryCommand cmd) {
         Assert.notNull(cmd.getName(), () -> "Name should not be null");
         log.info("Command received for {}.", cmd);
-        AggregateLifecycle.apply(new LibraryUpdatedEvent(cmd.getAggregateId(), cmd.getLibraryId(), cmd.getName()));
+        AggregateLifecycle.apply(
+                LibraryUpdatedEvent.builder()
+                .aggregateId(cmd.getAggregateId())
+                .libraryId(cmd.getLibraryId())
+                .name(cmd.getName())
+                .build()
+        );
     }
 
     @EventSourcingHandler
@@ -134,4 +149,24 @@ public class Library {
         log.info("EventSourcing applied for event {}.", event);
     }
 
+    @CommandHandler
+    public Library(ChangeLibraryStatusCommand cmd) {
+        Assert.notNull(cmd.getLibraryId(), () -> "Library Id should not be null");
+        Assert.notNull(cmd.getStatus(), () -> "Library status should not be null");
+
+        log.info("Command received for {}.", cmd);
+
+        AggregateLifecycle.apply(LibraryStatusChangedEvent.builder()
+                .aggregateId(cmd.getAggregateId())
+                .libraryId(cmd.getLibraryId())
+                .status(cmd.getStatus())
+                .build()
+        );
+    }
+
+    @EventSourcingHandler
+    private void libraryStatusChanged(LibraryStatusChangedEvent event) {
+        aggregateId = event.getAggregateId();
+        log.info("EventSourcing applied for event {}.", event);
+    }
 }

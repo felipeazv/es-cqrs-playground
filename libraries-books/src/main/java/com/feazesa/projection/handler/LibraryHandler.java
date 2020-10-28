@@ -2,6 +2,7 @@ package com.feazesa.projection.handler;
 
 import com.feazesa.event.LibraryCreatedEvent;
 import com.feazesa.event.LibraryDeletedEvent;
+import com.feazesa.event.LibraryStatusChangedEvent;
 import com.feazesa.event.LibraryUpdatedEvent;
 import com.feazesa.projection.model.LibraryEntity;
 import com.feazesa.projection.query.GetLibraryQuery;
@@ -11,6 +12,8 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Service;
+
+import static com.feazesa.enums.Enums.LibraryStatus.Available;
 
 @Log4j2
 @Service
@@ -24,7 +27,11 @@ public class LibraryHandler {
 
     @EventHandler
     public void addLibrary(LibraryCreatedEvent event) {
-        final var library = new LibraryEntity(event.getLibraryId(), event.getName());
+        final var library = LibraryEntity.builder()
+                .libraryId(event.getLibraryId())
+                .name(event.getName())
+                .status(Available)
+                .build();
         libraryRepository.save(library);
         log.info("Library saved {}.", event);
     }
@@ -35,8 +42,20 @@ public class LibraryHandler {
         if (findLibrary.isPresent()) {
             final var library = findLibrary.get();
             library.setName(event.getName());
+            library.setStatus(library.getStatus() == null ? Available : library.getStatus());
             libraryRepository.save(library);
             log.info("Library updated {}.", event);
+        }
+    }
+
+    @EventHandler
+    public void changeLibraryStatus(LibraryStatusChangedEvent event) {
+        final var findLibrary = libraryRepository.findById(event.getLibraryId());
+        if (findLibrary.isPresent()) {
+            final var library = findLibrary.get();
+            library.setStatus(event.getStatus());
+            libraryRepository.save(library);
+            log.info("Library status changed {}.", event);
         }
     }
 

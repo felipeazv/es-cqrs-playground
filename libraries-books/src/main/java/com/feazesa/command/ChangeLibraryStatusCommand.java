@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @Builder
 @Data
-public class LibraryTemporarilyUnavailableCommand {
+public class ChangeLibraryStatusCommand {
 
     @TargetAggregateIdentifier
     private final UUID aggregateId;
     private final UUID libraryId;
-    private final LibraryStatus libraryStatus;
+    private final LibraryStatus status;
 }
