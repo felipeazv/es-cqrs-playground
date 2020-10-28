@@ -10,3 +10,5 @@
 /.
 /projection.trace.db
 /projection.mv.db
+/libraries-books-projection.mv.db
+/reservation-service-projection.mv.db

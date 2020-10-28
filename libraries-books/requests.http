@@ -11,7 +11,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "name": "Amsterdam Library"
+  "name": "Berlin Library"
 }
 
 ### Get all libraries ###
