@@ -1,13 +1,7 @@
 package com.feazesa.aggregate;
 
-import com.feazesa.command.RegisterBookCommand;
-import com.feazesa.command.RegisterLibraryCommand;
-import com.feazesa.command.UpdateBookCommand;
-import com.feazesa.command.UpdateLibraryCommand;
-import com.feazesa.event.BookCreatedEvent;
-import com.feazesa.event.BookUpdatedEvent;
-import com.feazesa.event.LibraryCreatedEvent;
-import com.feazesa.event.LibraryUpdatedEvent;
+import com.feazesa.command.*;
+import com.feazesa.event.*;
 import lombok.extern.log4j.Log4j2;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.common.Assert;
@@ -32,7 +26,7 @@ public class Library {
     @CommandHandler
     public Library(RegisterLibraryCommand cmd) {
         Assert.notNull(cmd.getName(), () -> "Name should not be null");
-        log.info("Command received for command {}.", cmd);
+        log.info("Command received for {}.", cmd);
         AggregateLifecycle.apply(new LibraryCreatedEvent(cmd.getAggregateId(), cmd.getLibraryId(), cmd.getName()));
     }
 
@@ -44,14 +38,14 @@ public class Library {
     @CommandHandler
     public Library(UpdateLibraryCommand cmd) {
         Assert.notNull(cmd.getName(), () -> "Name should not be null");
-        log.info("Command received for command {}.", cmd);
+        log.info("Command received for {}.", cmd);
         AggregateLifecycle.apply(new LibraryUpdatedEvent(cmd.getAggregateId(), cmd.getLibraryId(), cmd.getName()));
     }
 
     @EventSourcingHandler
     private void updatedLibrary(LibraryUpdatedEvent event) {
         aggregateId = event.getAggregateId();
-        log.info("EventSourcing applied for event {}.", event);
+        log.info("EventSourcing applied for {}.", event);
     }
 
     @CommandHandler
@@ -59,7 +53,7 @@ public class Library {
         Assert.notNull(cmd.getLibraryId(), () -> "ID should not be null");
         Assert.notNull(cmd.getIsbn(), () -> "Book ISBN should not be null");
 
-        log.info("Command received for command {}.", cmd);
+        log.info("Command received for {}.", cmd);
 
         AggregateLifecycle.apply(BookCreatedEvent.builder()
                 .aggregateId(cmd.getAggregateId())
@@ -75,7 +69,7 @@ public class Library {
     @EventSourcingHandler
     private void bookCreated(BookCreatedEvent event) {
         aggregateId = event.getAggregateId();
-        log.info("EventSourcing applied for event {}.", event);
+        log.info("EventSourcing applied for {}.", event);
     }
 
     @CommandHandler
@@ -83,7 +77,7 @@ public class Library {
         Assert.notNull(cmd.getLibraryId(), () -> "ID should not be null");
         Assert.notNull(cmd.getIsbn(), () -> "Book ISBN should not be null");
 
-        log.info("Command received for command {}.", cmd);
+        log.info("Command received for {}.", cmd);
 
         AggregateLifecycle.apply(BookUpdatedEvent.builder()
                 .aggregateId(cmd.getAggregateId())
@@ -98,6 +92,44 @@ public class Library {
 
     @EventSourcingHandler
     private void bookUpdated(BookUpdatedEvent event) {
+        aggregateId = event.getAggregateId();
+        log.info("EventSourcing applied for {}.", event);
+    }
+
+    @CommandHandler
+    public Library(DeleteBookCommand cmd) {
+        Assert.notNull(cmd.getBookId(), () -> "Book Id should not be null");
+
+        log.info("Command received for {}.", cmd);
+
+        AggregateLifecycle.apply(BookDeletedEvent.builder()
+                .aggregateId(cmd.getAggregateId())
+                .bookId(cmd.getBookId())
+                .build()
+        );
+    }
+
+    @EventSourcingHandler
+    private void bookDeleted(BookDeletedEvent event) {
+        aggregateId = event.getAggregateId();
+        log.info("EventSourcing applied for event {}.", event);
+    }
+
+    @CommandHandler
+    public Library(DeleteLibraryCommand cmd) {
+        Assert.notNull(cmd.getLibraryId(), () -> "Library Id should not be null");
+
+        log.info("Command received for {}.", cmd);
+
+        AggregateLifecycle.apply(LibraryDeletedEvent.builder()
+                .aggregateId(cmd.getAggregateId())
+                .libraryId(cmd.getLibraryId())
+                .build()
+        );
+    }
+
+    @EventSourcingHandler
+    private void libraryDeleted(LibraryDeletedEvent event) {
         aggregateId = event.getAggregateId();
         log.info("EventSourcing applied for event {}.", event);
     }

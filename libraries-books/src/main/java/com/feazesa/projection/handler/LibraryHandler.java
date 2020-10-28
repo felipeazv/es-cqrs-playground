@@ -1,6 +1,7 @@
 package com.feazesa.projection.handler;
 
 import com.feazesa.event.LibraryCreatedEvent;
+import com.feazesa.event.LibraryDeletedEvent;
 import com.feazesa.event.LibraryUpdatedEvent;
 import com.feazesa.projection.model.LibraryEntity;
 import com.feazesa.projection.query.GetLibraryQuery;
@@ -36,6 +37,16 @@ public class LibraryHandler {
             library.setName(event.getName());
             libraryRepository.save(library);
             log.info("Library updated {}.", event);
+        }
+    }
+
+    @EventHandler
+    public void deleteLibrary(LibraryDeletedEvent event) {
+        final var findLibrary = libraryRepository.findById(event.getLibraryId());
+        if (findLibrary.isPresent()) {
+            final var library = findLibrary.get();
+            libraryRepository.delete(library);
+            log.info("Library deleted {}.", event);
         }
     }
 

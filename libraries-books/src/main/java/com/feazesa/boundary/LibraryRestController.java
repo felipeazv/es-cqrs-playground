@@ -1,9 +1,6 @@
 package com.feazesa.boundary;
 
-import com.feazesa.command.RegisterBookCommand;
-import com.feazesa.command.RegisterLibraryCommand;
-import com.feazesa.command.UpdateBookCommand;
-import com.feazesa.command.UpdateLibraryCommand;
+import com.feazesa.command.*;
 import com.feazesa.projection.model.BookEntity;
 import com.feazesa.projection.model.BookEntity.BookDTO;
 import com.feazesa.projection.model.LibraryEntity;
@@ -92,5 +89,25 @@ public class LibraryRestController {
     @GetMapping
     public Iterable<LibraryEntity> getLibraries() throws InterruptedException, ExecutionException {
         return queryGateway.query(GetLibraryQuery.builder().build(), ResponseTypes.multipleInstancesOf(LibraryEntity.class)).get();
+    }
+
+    @DeleteMapping("/{libraryId}/books/{bookId}")
+    public String deleteBook(@PathVariable UUID bookId) {
+        final var command = DeleteBookCommand.builder()
+                .aggregateId(UUID.randomUUID())
+                .bookId(bookId)
+                .build();
+        commandGateway.send(command);
+        return "Deleted";
+    }
+
+    @DeleteMapping("/{libraryId}")
+    public String deleteLibrary(@PathVariable UUID libraryId) {
+        final var command = DeleteLibraryCommand.builder()
+                .aggregateId(UUID.randomUUID())
+                .libraryId(libraryId)
+                .build();
+        commandGateway.send(command);
+        return "Deleted";
     }
 }

@@ -27,25 +27,37 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "author": "Author 2",
-  "isbn": "BBB123123123",
-  "title": "Book 2"
+  "author": "Isaac Newton",
+  "isbn": "11100000000000",
+  "title": "Cálculo Integral Diferencial Volume 2"
 }
 
 ### Update a Book ###
 
-PUT localhost:8080/api/libraries/815d5517-1aea-40e0-8bb4-734d89ee7b78/books/da003339-b0cf-4735-b4c1-17203498e0ec
+PUT localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0/books/aa4b7c55-f9cf-498e-a140-fec289068b50
 Accept: application/json
 Content-Type: application/json
 
 {
   "author": "Author 1",
   "isbn": "AAA123123123",
-  "title": "Book 2"
+  "title": "Book 2-new"
 }
 
 ### Get all books from a given library ###
 
 GET localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0/books
+Accept: application/json
+Content-Type: application/json
+
+### Delete a book from a given library ###
+
+DELETE localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0/books/aa4b7c55-f9cf-498e-a140-fec289068b50
+Accept: application/json
+Content-Type: application/json
+
+### Delete a book from a given library ###
+
+DELETE localhost:8080/api/libraries/38904ee6-2dd4-4d69-befc-af382342fdd0
 Accept: application/json
 Content-Type: application/json

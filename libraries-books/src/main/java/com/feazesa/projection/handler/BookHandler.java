@@ -1,7 +1,9 @@
 package com.feazesa.projection.handler;
 
 import com.feazesa.event.BookCreatedEvent;
+import com.feazesa.event.BookDeletedEvent;
 import com.feazesa.event.BookUpdatedEvent;
+import com.feazesa.event.LibraryDeletedEvent;
 import com.feazesa.projection.model.BookEntity;
 import com.feazesa.projection.model.BookEntity.BookDTO;
 import com.feazesa.projection.query.GetBooksQuery;
@@ -48,6 +50,25 @@ public class BookHandler {
             book.setTitle(event.getTitle());
             bookRepository.save(book);
             log.info("Book updated {}.", event);
+        }
+    }
+
+    @EventHandler
+    public void deleteBook(BookDeletedEvent event) {
+        final var findBook = bookRepository.findById(event.getBookId());
+        if (findBook.isPresent()) {
+            final var book = findBook.get();
+            bookRepository.delete(book);
+            log.info("Book deleted {}.", event);
+        }
+    }
+
+    @EventHandler
+    public void deleteBooksFromLibrary(LibraryDeletedEvent event) {
+        final var books = bookRepository.findByLibraryId(event.getLibraryId());
+        if (!books.isEmpty()) {
+            bookRepository.deleteAll(books);
+            log.info("Books deleted {}.", event);
         }
     }
 

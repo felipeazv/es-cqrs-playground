@@ -27,7 +27,6 @@ public class Replay {
             processor.resetTokens();
             processor.start();
         });
-        log.warn("Replay finished.");
     }
 
     @Value
